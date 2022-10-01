@@ -13,4 +13,8 @@ export class NgoRegComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  gotoLogInpage(){
+    this.router.navigateByUrl("login")
+  }
+
 }

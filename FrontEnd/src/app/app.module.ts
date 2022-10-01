@@ -7,6 +7,7 @@ import { NgoRegComponent } from './components/ngo-reg/ngo-reg.component';
 import { RestaurantRegComponent } from './components/restaurant-reg/restaurant-reg.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { HomeComponent } from './components/home/home.component';
     RestaurantRegComponent,
     NgoRegComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,13 @@ export class RestaurantRegComponent implements OnInit {
 
   constructor(private router: Router) { }
 
+  showSucessMessage = false;
+  serverErrorMessages = 'false';
+
   ngOnInit(): void {
   }
 
+  gotoLogInpage(){
+    this.router.navigateByUrl("login")
+  }
 }
