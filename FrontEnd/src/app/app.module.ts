@@ -8,6 +8,7 @@ import { RestaurantRegComponent } from './components/restaurant-reg/restaurant-r
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     NgoRegComponent,
     LoginComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
