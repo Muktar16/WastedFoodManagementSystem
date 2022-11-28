@@ -7,7 +7,7 @@ var ngoSchema = new mongoose.Schema({
     ngoEmail: {type: String, required: 'Email can\'t be empty', unique: true},
     phone: {type: String, required: 'You must provide a phone number',},
     registrationNo: {type:String,required: 'You must provide your registration Number'},
-    address: {type: String, required: 'Please provide your NGO adress',},
+    address: {type: String, required: 'Please provide your NGO address',},
     password: {type: String, required: 'Password can\'t be empty', minlength: [4, 'Password must be atleast 4 character long']},
     saltSecret: String
 });
@@ -43,4 +43,4 @@ ngoSchema.methods.generateJwt = function () {
     });
 }
 
-mongoose.model('User', ngoSchema);
+mongoose.model('ngoUser', ngoSchema);

@@ -36,23 +36,24 @@ export class NgoRegComponent implements OnInit {
     this.serverErrorMessages='false';
     this.userService.saveNgoUser(this.ngo_registerForm.value).subscribe(
       res => {
-        alert("Registration Successfully");
+        //alert("Registration Successfully");
         this.showSucessMessage = true;
-        setTimeout(() => {this.showSucessMessage = false; this.router.navigate(['/login'])}, 3000);
-        this.ngo_registerForm.reset();
+        // setTimeout(() => {this.showSucessMessage = false; this.router.navigate(['/login'])}, 3000);
+        // this.ngo_registerForm.reset();
       },
       err => {
         if (err.status === 422) {
-          this.serverErrorMessages = err.error.join('<br/>');
-          alert(this.serverErrorMessages);
+          this.serverErrorMessages = err.error.join(',  ');
+          //alert(this.serverErrorMessages);
         }
         else
           this.serverErrorMessages = 'Opps!! Server not Responding. Please contact admin.';
-          alert(this.serverErrorMessages);
+          //alert(this.serverErrorMessages);
       }
     )
-
   }
+
+
   gotoLogInpage(){
     this.router.navigateByUrl("login");
   }

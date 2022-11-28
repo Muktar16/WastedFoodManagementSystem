@@ -9,6 +9,9 @@ import { HomeComponent } from './componenets/home/home.component';
 import { LoginComponent } from './componenets/login/login.component';
 import { NgoRegComponent } from './componenets/ngo-reg/ngo-reg.component';
 import { RestaurantRegComponent } from './componenets/restaurant-reg/restaurant-reg.component';
+import { NgoHomeComponent } from './componenets/ngo-home/ngo-home.component';
+import { AdminHomeComponent } from './componenets/admin-home/admin-home.component';
+import { RestaurantHomeComponent } from './componenets/restaurant-home/restaurant-home.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { RestaurantRegComponent } from './componenets/restaurant-reg/restaurant-
     HomeComponent,
     LoginComponent,
     NgoRegComponent,
-    RestaurantRegComponent
+    RestaurantRegComponent,
+    NgoHomeComponent,
+    AdminHomeComponent,
+    RestaurantHomeComponent
   ],
   imports: [
     BrowserModule,

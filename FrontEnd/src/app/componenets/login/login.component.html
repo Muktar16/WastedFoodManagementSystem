@@ -9,11 +9,11 @@
      </div>
    </div> -->
  
-     <form class="form-inline">
+     <form [formGroup]="loginForm" class="form-inline">
        <div class="input">
          <br>
          <label for="accountType">Account Type</label>
-         <select formControlName="selectType" id="accountType" class="form-control all1" aria-describedby="userHelp" placeholder="Account Type">
+         <select formControlName="userType" id="accountType" class="form-control all1" aria-describedby="userHelp" placeholder="Account Type">
            <option value="Admin">Admin</option>
            <option value="NGO Representative">NGO Representative</option>
            <option value="Restaurant Representative">Restaurant Representative</option>
@@ -22,7 +22,7 @@
          <br />
  
          <label for="userName">Email</label>
-         <input formControlName="userName" type="text" class="form-control all1" id="userName" aria-describedby="userHelp" placeholder="Enter NGO email">
+         <input formControlName="email" type="text" class="form-control all1" id="userName" aria-describedby="userHelp" placeholder="Enter NGO email">
          <small id="userHelp" class="form-text text-muted"></small>
          <br />
          <label for="userName">Password</label>
@@ -32,7 +32,7 @@
        </div>   
        
        <br />
-       <input routerLink="hompage" click type="submit" (click)="login()" value="Login"  class="submit" />
+       <input click type="submit" (click)="login()" value="Login"  class="submit" />
        <p style="padding-left:15%">Don't have an Account? <a href="#" routerlink="home">Register now</a></p>
      </form>
    </div>

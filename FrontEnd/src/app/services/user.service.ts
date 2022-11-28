@@ -15,4 +15,19 @@ export class UserService {
     console.log(user);
     return this._http.post(environment.apiBaseUrl+'/api/ngo-register',user,this.noAuthHeader);
   }
+
+  saveRestUser(user:any){
+    console.log("Data Reache in saveRestUser Service Function");
+    console.log(user);
+    return this._http.post(environment.apiBaseUrl+'/api/rest-register',user,this.noAuthHeader);
+  }
+
+  login(authCredentials:any) {
+    return this._http.post(environment.apiBaseUrl + '/api/authenticate', authCredentials, this.noAuthHeader);
+  }
+
+  setToken(token: any) {
+    localStorage.setItem('token', token);
+  }
+
 }
