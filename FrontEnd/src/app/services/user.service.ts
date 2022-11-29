@@ -25,6 +25,9 @@ export class UserService {
   login(authCredentials:any) {
     return this._http.post(environment.apiBaseUrl + '/api/authenticate', authCredentials, this.noAuthHeader);
   }
+  adminLogin(authCredentials:any) {
+    return this._http.post(environment.apiBaseUrl + '/api/admin-authenticate', authCredentials, this.noAuthHeader);
+  }
 
   setToken(token: any) {
     localStorage.setItem('token', token);

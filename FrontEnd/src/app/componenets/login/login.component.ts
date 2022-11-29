@@ -26,14 +26,20 @@ export class LoginComponent implements OnInit {
   login(){
     this.userService.login(this.loginForm.value).subscribe(
       (res:any) => {
-        console.log(res);
+        //console.log(res);
         if(res['status']=='false') {
           this.serverErrorMessages = res['message'];
-          alert(this.serverErrorMessages);
+          //alert(this.serverErrorMessages);
         }
         else{
           this.userService.setToken(res['token']);
-          this._router.navigateByUrl('/ngo-home');
+          if(res['userType']=='NGO Representative'){
+            this._router.navigateByUrl('/ngo-home');
+          }
+          else if(res['userType']=='Restaurant Representative'){
+            this._router.navigateByUrl('/restaurant-home');
+          }
+             
         } 
       },
       err => {

@@ -12,6 +12,8 @@ import { RestaurantRegComponent } from './componenets/restaurant-reg/restaurant-
 import { NgoHomeComponent } from './componenets/ngo-home/ngo-home.component';
 import { AdminHomeComponent } from './componenets/admin-home/admin-home.component';
 import { RestaurantHomeComponent } from './componenets/restaurant-home/restaurant-home.component';
+import { AdminLoginComponent } from './componenets/admin-login/admin-login.component';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { RestaurantHomeComponent } from './componenets/restaurant-home/restauran
     RestaurantRegComponent,
     NgoHomeComponent,
     AdminHomeComponent,
-    RestaurantHomeComponent
+    RestaurantHomeComponent,
+    AdminLoginComponent,
   ],
   imports: [
     BrowserModule,
