@@ -2,14 +2,19 @@ const mongoose = require('mongoose');
 const Admin = mongoose.model('admin');
 
 module.exports.authenticate = (req, res, next) => {
-    console.log(req.body);
     let email = req.body.email;
     let password = req.body.password;
+    console.log(email);
+    console.log(password);
 
+    if(!email || !password){
+      return res.status(200).json({"status":"false", "message":"Email or Password Missing"});
+    }
     Admin.findOne({ email: email },(err, user) => {
         if(user){
+          console.log(user);
           if(!user.verifyPassword(password)){
-             return res.status(200).json({"status":"false", "message":"Wrong Password", token:""});
+             return res.status(200).json({"status":"false", "message":"Wrong Password"});
           }
           else return res.status(200).json({"status":"true", "token": user.generateJwt()});
         }

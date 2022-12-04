@@ -1,1 +1,134 @@
-<p>admin-home works!</p>
+<div class="navbar">
+    <div class="nav-left">
+        <a class="nav-btn" (click)="ngoList()">NGO List</a>
+        <a class="nav-btn" (click)="restaurantList()">Restaurant List</a>
+    </div>
+    <div class="nav-middle">
+        <h1 class="welcome-message">Wasted Food Management System Admin Panel</h1>
+    </div>
+    <div class="nav-right">
+        <a class="nav-btn" (click)="itemList()">Food Items</a>
+        <a class="nav-btn" (click)="logOut()" routerLink="/admin">Log Out</a>
+    </div> 
+</div>
+
+
+<div *ngIf="mainContent=='activities'">
+    <div class="caption1">
+        <h2>Current Activities</h2>
+    </div>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Food Type</th>
+            <th scope="col">Restaurant Name</th>
+            <th scope="col">item To get</th>
+            <th scope="col">Get item</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let request of requests; let i=index">
+            <td>{{request.date}}</td>
+            <td>{{request.foodType}}</td>
+            <td>{{request.amount}}</td>
+            <td>{{request.timeLimit}}</td>
+            <td><button (click)="updateRequest(request,i)">Update</button></td>
+            <td><button (click)="deleteRequest(request)">Delete</button></td>
+          </tr> -->
+        </tbody>
+      </table>
+</div>
+
+<div *ngIf="mainContent=='ngoList'">
+    <div class="caption1">
+        <h2>Registerd NGO list</h2>
+    </div>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">NGO Name</th>
+            <th scope="col">NGO Email</th>
+            <th scope="col">Phone No</th>
+            <th scope="col">Registration No</th>
+            <th scope="col">Address</th>
+            <th scope="col">Remove Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ngo of ngoLists">
+            <td>{{ngo.ngoName}}</td>
+            <td>{{ngo.ngoEmail}}</td>
+            <td>{{ngo.phone}}</td>
+            <td>{{ngo.registrationNo}}</td>
+            <td>{{ngo.registrationNo}}</td>
+            <td><button (click)="removeNgo(ngo)">Remove NGO</button></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+<div *ngIf="mainContent=='restaurantList'">
+    <div class="caption1">
+        <h2>Registerd Restaurant list</h2>
+    </div>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Restaurant Name</th>
+            <th scope="col">Restaurant Email</th>
+            <th scope="col">Contact No</th>
+            <th scope="col">Address</th>
+            <th scope="col">Remove Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let restaurant of restaurantLists">
+                <td>{{restaurant.name}}</td>
+                <td>{{restaurant.email}}</td>
+                <td>{{restaurant.phone}}</td>
+                <td>{{restaurant.address}}</td>
+                <td><button (click)="removeRestaurant(restaurant)">Remove Restaurant</button></td>
+              </tr>
+        </tbody>
+      </table>
+</div>
+
+<div *ngIf="mainContent=='itemList'">
+    <div class="caption1">
+        <h2>Food Item list</h2>
+    </div>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Item No</th>
+            <th scope="col">Name of the Food Item</th>
+            <th scope="col">Adding Date</th>
+            <th scope="col">Remove Item</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let food of foodItems; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{food.name}}</td>
+            <td>{{food.addingDate}}</td>
+            <td><button (click)="removeFood(food)">Remove This Food</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="submit1" *ngIf="!addFoodForm" (click)="activateAddFoodForm()">Add New Food Item</button>
+      <form [formGroup]="FoodItem" class="form-inline" *ngIf="addFoodForm">
+        <div class="input">
+            <br>
+          <input type="text" formControlName="name" class="all1" placeholder="Name of the New Food">
+          <small id="userHelp" class="form-text text-muted"></small>
+        </div>   
+        <input click type="submit" (click)="addNewFood()" value="Add Item"  class="submit" />
+     </form>
+</div>

@@ -1,1 +1,98 @@
-<p>restaurant-home works!</p>
+<div class="navbar">
+    <div class="nav-left">
+        <a routerLink="/add-packa">Upload Food Package</a>
+        <a href="#news">Notifications</a>
+    </div>
+    <div class="nav-middle">
+        <h1 class="welcome-message">Welcome to {{currentRestaurant.name}}  Restaurant Dashboard</h1>
+    </div>
+    <div class="nav-right">
+        <a (click)="pendingRequestList()">Available Food Requests</a>
+        <a href="" routerLink="/login" (click)="logout()">Log Out</a>
+    </div>  
+</div>
+
+
+<div class="caption1">
+    <h2>Current Activities</h2>
+</div>
+
+<div *ngIf="currentContent=='activities'">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Remaining time</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let request of requests; let i=index">
+            <td>{{request.date}}</td>
+            <td>{{request.foodType}}</td>
+            <td>{{request.amount}}</td>
+            <td>{{request.timeLimit}}</td>
+            <td><button (click)="updateRequest(request,i)">Update</button></td>
+            <td><button (click)="deleteRequest(request)">Delete</button></td>
+          </tr> -->
+        </tbody>
+      </table>
+    
+    
+    <div class="caption2">
+        <h2>Last 1 month Activities</h2>
+    </div>
+    
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Food Type</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Ngo Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Delivery Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let request of requests; let i=index">
+            <td>{{request.date}}</td>
+            <td>{{request.foodType}}</td>
+            <td>{{request.amount}}</td>
+            <td>{{request.timeLimit}}</td>
+            <td><button (click)="updateRequest(request,i)">Update</button></td>
+            <td><button (click)="deleteRequest(request)">Delete</button></td>
+          </tr> -->
+        </tbody>
+      </table>    
+</div>
+
+<!-- PendingRequests -->
+<div *ngIf="currentContent=='pendingRequests'">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Food Type</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Ngo Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Delivery Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let request of requests; let i=index">
+            <td>{{request.date}}</td>
+            <td>{{request.foodType}}</td>
+            <td>{{request.amount}}</td>
+            <td>{{request.timeLimit}}</td>
+            <td><button (click)="updateRequest(request,i)">Update</button></td>
+            <td><button (click)="deleteRequest(request)">Delete</button></td>
+          </tr> -->
+        </tbody>
+      </table>    
+</div>

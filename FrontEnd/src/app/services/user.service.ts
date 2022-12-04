@@ -10,27 +10,45 @@ export class UserService {
   constructor(private _http: HttpClient) { }
   noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
+  //save a new NGO user to the system
   saveNgoUser(user:any){
-    console.log("Data Reache in saveNgoUser Service Function");
-    console.log(user);
     return this._http.post(environment.apiBaseUrl+'/api/ngo-register',user,this.noAuthHeader);
   }
 
+  //save a new Restaurant to the system
   saveRestUser(user:any){
-    console.log("Data Reache in saveRestUser Service Function");
-    console.log(user);
-    return this._http.post(environment.apiBaseUrl+'/api/rest-register',user,this.noAuthHeader);
+    return this._http.post(environment.apiBaseUrl+'/api/restaurant-register',user,this.noAuthHeader);
   }
 
+  //log in to the system by NGO or Restaurant Representative
   login(authCredentials:any) {
-    return this._http.post(environment.apiBaseUrl + '/api/authenticate', authCredentials, this.noAuthHeader);
-  }
-  adminLogin(authCredentials:any) {
-    return this._http.post(environment.apiBaseUrl + '/api/admin-authenticate', authCredentials, this.noAuthHeader);
+    if(authCredentials.userType=="NGO Representative")
+      return this._http.post(environment.apiBaseUrl + '/api/ngo-authenticate', authCredentials, this.noAuthHeader);
+    else 
+      return this._http.post(environment.apiBaseUrl + '/api/restaurant-authenticate', authCredentials, this.noAuthHeader);
   }
 
-  setToken(token: any) {
-    localStorage.setItem('token', token);
+  //get Current logged in user
+  getUser() {
+    return this._http.get(environment.apiBaseUrl + '/api/userprofile');
+  }
+
+  
+  sendRecoveryEmail(recoveryData:any){
+    console.log("hello")
+    return this._http.post(environment.apiBaseUrl + '/api/recovery-mail',recoveryData,this.noAuthHeader);
+  }
+
+  
+
+
+  getFoodItems(){
+    return this._http.get(environment.apiBaseUrl + '/api/get-foodItems',this.noAuthHeader);
+  }
+
+  addNewFood(foodItem:any){
+    console.log(foodItem);
+    return this._http.post(environment.apiBaseUrl + '/api/add-food',foodItem,this.noAuthHeader);
   }
 
 }
