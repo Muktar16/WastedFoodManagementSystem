@@ -46,6 +46,10 @@ router.post('/add-food-package', foodPackageController.addFoodPackage);
 router.post('/get-current-packages', foodPackageController.getCurrentPackages);
 router.get('/get-all-available-packages', foodPackageController.getAllAvailablePackages);
 router.post('/get-available-packages', foodPackageController.getAvailablePackages);
+router.post('/remove-package', foodPackageController.removePackage);
+router.post('/update-package', foodPackageController.updatePackage);
+
+
 
 
 //routing to restaurant notification controller modules

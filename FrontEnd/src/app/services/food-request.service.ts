@@ -58,5 +58,11 @@ export class RequestService {
   getResNotifications(currentRestaurant:any){
     return this.http.post(environment.apiBaseUrl + '/api/get-restaurant-notifications',currentRestaurant,this.noAuthHeader);
   }
+  removePackage(Package:any){
+    return this.http.post(environment.apiBaseUrl + '/api/remove-package',Package,this.noAuthHeader);
+  }
+  updatePackage(packageToBeUpdated:any){
+    return this.http.post(environment.apiBaseUrl + '/api/update-package',packageToBeUpdated,this.noAuthHeader);
+  }
 }
 

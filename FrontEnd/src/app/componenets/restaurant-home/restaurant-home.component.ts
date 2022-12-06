@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { text } from 'body-parser';
 import { interval, Subscription } from 'rxjs';
 import { RequestService } from 'src/app/services/food-request.service';
 import { OtherService } from 'src/app/services/other.service';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-restaurant-home',
@@ -15,8 +18,7 @@ export class RestaurantHomeComponent implements OnInit {
 
   constructor(private userService:UserService,private router:Router,
     private foodService:RequestService, private otherService:OtherService) {
-      this.mySub = interval(3000).subscribe((func => {
-        this.getCurrentPackages();
+      this.mySub = interval(10000).subscribe((func => {
         this.getAllNotifications();
       }))
     }
@@ -29,6 +31,7 @@ export class RestaurantHomeComponent implements OnInit {
   currrentPackages:any;
   notificaitons:any;
   notifications:any;
+  packageToBeUpdated:any;
   currentRestaurant = {
     name:'',
     email:''
@@ -38,25 +41,24 @@ export class RestaurantHomeComponent implements OnInit {
     quantity:new FormControl(null,[Validators.required]),
     expiryDate:new FormControl(null,[Validators.required]),
   });
-
+  updatedPackage : FormGroup=new FormGroup({
+    foodName:new FormControl(null,[Validators.required]),
+    quantity:new FormControl(null,[Validators.required]),
+    expiryDate:new FormControl(null,[Validators.required]),
+  });
   //methods
   ngOnInit(): void {
     this.getUser();
-    this.getCurrentPackages();
   }
 
   getCurrentPackages(){
     this.foodService.getCurrentPackages(this.currentRestaurant).subscribe(
       (res:any) => {
-        if(!this.currrentPackages && !this.notificaitons){
-          this.mySub?.unsubscribe();
-        }
         this.currrentPackages = res;
         //console.log(this.currrentPackages);
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        Swal.fire("Server Error","Probleb getting Current Activities. Pleaser Reload the page","error");
       }
     );
   }
@@ -70,7 +72,7 @@ export class RestaurantHomeComponent implements OnInit {
         this.notificaitons = res;
         console.log("hiiii")
         console.log(this.notificaitons);
-        this.currentContent = "notifications"
+        //this.currentContent = "notifications"
       },
       (err:any) => {
         alert(err.error.message);
@@ -84,6 +86,8 @@ export class RestaurantHomeComponent implements OnInit {
       (res:any) => {
         this.currentRestaurant.name = res['user'].name;
         this.currentRestaurant.email = res['user'].email;
+        this.getCurrentPackages();
+        this.getFoodItems();
       },
       err => { 
         this.serverErrorMessages = err.error.message;
@@ -94,13 +98,10 @@ export class RestaurantHomeComponent implements OnInit {
 
   showNotificaitons(){
     this.getAllNotifications();
-    
-    //this.router.navigateByUrl('/res-notifications');
   }
 
   addFoodPackageButton(){
-    this.getFoodItems();
-    this.currentContent = "addFoodPackageForm"
+    this.currentContent = "addFoodPackageForm";
   }
 
   addFoodPackage(){
@@ -111,14 +112,14 @@ export class RestaurantHomeComponent implements OnInit {
     else{
       this.foodService.addFoodPackage(this.foodPackage.value,this.currentRestaurant).subscribe(
         (res:any)=>{
-          //console.log(res);
-          this.currentContent = 'successMessage';
+          Swal.fire("Succeed","Your Food Package Successfully to the System","success").then(result=>{
+            window.location.reload();
+          })
         },
         (err:any)=>{
           if(err.status == 422)
-            this.serverErrorMessages = err.error.message;
-          else this.serverErrorMessages = "Oops!! Server Connection Failed....";
-          //alert(err.errror.message);
+            Swal.fire("Error",err.error.message,"error");
+          else Swal.fire("Connecton Error", "Server Not Responding. Please Contact Admin","error");
         }
       )
     }
@@ -163,5 +164,52 @@ export class RestaurantHomeComponent implements OnInit {
   cancel(notification:any){
 
   }
+  updatePackage(Package:any){
+    this.packageToBeUpdated = Package;
+    this.currentContent = 'updateForm';
+  }
+  updateFoodPackage(){
+    this.foodService.updatePackage(this.packageToBeUpdated).subscribe(
+      res=>{
+        if(res){
+          Swal.fire("Succeed","Package updated Successfully","success").then(result=>{
+            window.location.reload();
+          });
+        }
+    },
+    err=>{
+      Swal.fire("Error",err.error.message,"error");
+    })
+  }
+  
+  deletePackage(Package:any){
+    if(Package.status=="Shipping"){
+      Swal.fire("Warning",)
+    }
+    else{
+      Swal.fire({title: 'Are you sure?',text: "You won't be able to revert this!",
+        icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',confirmButtonText: 'Yes, delete it!'}).then((result) => {
+        if (result.isConfirmed) {
+          this.foodService.removePackage(Package).subscribe(
+            (res:any) =>{
+              if(res){
+                Swal.fire('Deleted!','Your food Package has been deleted.','success').then(result=>{
+                  window.location.reload();
+                });
+                
+              }    
+            },
+            (err:any)=>{
+              Swal.fire('Error Deleting',err.error.message,'error');
+            }
+            
+          )
+        }
+      })
+      
+    }
+  }
 
 }
+

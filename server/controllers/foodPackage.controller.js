@@ -25,25 +25,7 @@ module.exports.addFoodPackage = async (req, res) =>{
 }
 
 module.exports.getCurrentPackages = async (req, res) =>{
-    console.log(req.body);
-    var condition = 
-    { 
-        [Op.and]: [ 
-            { 
-                restaurantEmail: {
-                    [Op.eq]: req.body.email
-                },
-            },
-            { 
-                status: {
-                    [Op.or]: ["Pending", "Waiting For NGO Confirmation","Shiping"]
-                }
-            }
-        ]
-    }
-
-    packages = FoodPackage.find(condition);
-    console.log(packages);
+    packages = FoodPackage.find({restaurantEmail:req.body.email,status:{$ne:"Delivered"}}).sort({$natural:-1});;
     packages.exec((req, doc) =>{
         return res.status(200).json(doc);
     })
@@ -65,6 +47,34 @@ module.exports.getAvailablePackages = async (req, res) =>{
         return res.status(200).json(doc);
     })
 }
+
+module.exports.removePackage = async (req, res) =>{
+    FoodPackage.deleteOne({ packageId: req.body.packageId}).then(function(){
+        console.log("Data deleted"); // Success
+    }).catch(function(error){
+        console.log(error); // Failure
+    });
+    return res.status(200).json({status:true});
+}
+
+module.exports.updatePackage = async (req, res) =>{
+    console.log(req.body)
+    res = FoodPackage.updateOne(
+        { packageId: req.body.packageId },
+        { $set:
+           {
+             foodName: req.body.foodName,
+             quantity: req.body.quantity,
+             expiryDate: req.body.expiryDate
+           }
+        }
+       
+     )
+     console.log(res);
+     res.send({statys:true});
+}
+
+
 
 
 

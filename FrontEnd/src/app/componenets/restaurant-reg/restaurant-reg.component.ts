@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-restaurant-reg',
@@ -29,26 +30,22 @@ export class RestaurantRegComponent implements OnInit {
 
   restaurant_register(){
     if((this.restaurant_registerForm.get('password')?.value != this.restaurant_registerForm.get('cpassword')?.value)){
-      this.serverErrorMessages = "Password Mismatched!!!!";
+      Swal.fire("Password Mismatched!!","You Must provide same Password in Password and Confirm Password Field","error");
       return;
     }
     
     this.serverErrorMessages='false';
     this.userService.saveRestUser(this.restaurant_registerForm.value).subscribe(
       res => {
-        //alert("Registration Successfully");
-        this.showSucessMessage = true;
-        // setTimeout(() => {this.showSucessMessage = false; this.router.navigate(['/login'])}, 3000);
-        // this.restaurant_registerForm.reset();
+        Swal.fire("Succeed","Your Registration Completed Successfully. You can Login Now.","success");
+        this.router.navigateByUrl('/login');
       },
       err => {
         if (err.status === 422) {
-          this.serverErrorMessages = err.error.join(',  ');
-          //alert(this.serverErrorMessages);
+          Swal.fire("Error",err.error.join('<br>'),"error");
         }
         else
-          this.serverErrorMessages = 'Opps!! Server not Responding. Please contact admin.';
-          //alert(this.serverErrorMessages);
+        Swal.fire("Server Connection Error","Server Not Responding. Please contact Admin","error");
       }
     )
 
