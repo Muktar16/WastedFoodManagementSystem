@@ -9,6 +9,7 @@ import { LoginComponent } from './componenets/login/login.component';
 import { NgoHomeComponent } from './componenets/ngo-home/ngo-home.component';
 import { NgoRegComponent } from './componenets/ngo-reg/ngo-reg.component';
 import { RecoverPasswordComponent } from './componenets/recover-password/recover-password.component';
+import { ResNotificationsComponent } from './componenets/res-notifications/res-notifications.component';
 import { RestaurantHomeComponent } from './componenets/restaurant-home/restaurant-home.component';
 import { RestaurantRegComponent } from './componenets/restaurant-reg/restaurant-reg.component';
 
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path:'admin-home',canActivate:[AuthGuard],component:AdminHomeComponent},
   {path:'admin',component:AdminLoginComponent},
   {path:'forgot-password',component:RecoverPasswordComponent},
-  {path:'available-package',component:AvailablePackageComponent}
+  {path:'available-package',component:AvailablePackageComponent},
+  {path:'res-notifications',component:ResNotificationsComponent}
 ];
 
 @NgModule({

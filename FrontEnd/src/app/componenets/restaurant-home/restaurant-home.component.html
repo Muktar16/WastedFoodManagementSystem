@@ -1,7 +1,7 @@
 <div class="navbar">
     <div class="nav-left">
         <a (click)="addFoodPackageButton()">Upload Food Package</a>
-        <a >Notifications</a>
+        <a (click)="showNotificaitons()">Notifications</a>
     </div>
     <div class="nav-middle">
         <h1 class="welcome-message">{{currentRestaurant.name}}  Restaurant Dashboard</h1>
@@ -146,3 +146,35 @@
   </div>
 </div>
 
+
+<!-- notificaitons -->
+<div *ngIf="currentContent=='notifications'">
+  <div class="caption1">
+    <h2>All Notifications</h2>
+</div>
+
+<table class="table table-bordered border-primary table-info">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Details</th>
+        <th scope="col">Time</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let notification of notifications; let i=index">
+        <td>{{i+1}}</td>
+        <td>{{notification.message}}</td>
+        <td *ngIf="notification.status=='running'">
+            <button class="remove-btn" (click)="confirm(notification)">Confirm Delivery</button>
+            <button class="remove-btn" (click)="cancel(notification)">Cancel</button>
+        </td>
+        <td *ngIf="notification.status=='done'">
+          Completed
+          <!-- <button class="remove-btn" (click)="confirm(notification)">Mark as Done</button> -->
+      </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

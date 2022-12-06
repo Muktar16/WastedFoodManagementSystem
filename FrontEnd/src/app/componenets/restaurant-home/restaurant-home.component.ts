@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 import { RequestService } from 'src/app/services/food-request.service';
 import { OtherService } from 'src/app/services/other.service';
 import { UserService } from 'src/app/services/user.service';
@@ -12,13 +13,22 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class RestaurantHomeComponent implements OnInit {
 
-  constructor(private userService:UserService,private router:Router,private foodService:RequestService, private otherService:OtherService) { }
+  constructor(private userService:UserService,private router:Router,
+    private foodService:RequestService, private otherService:OtherService) {
+      this.mySub = interval(3000).subscribe((func => {
+        this.getCurrentPackages();
+        this.getAllNotifications();
+      }))
+    }
 
   //data Objects
+  mySub: Subscription | undefined;
   serverErrorMessages = 'false';
   currentContent = 'activities';
   foodItems:any;
   currrentPackages:any;
+  notificaitons:any;
+  notifications:any;
   currentRestaurant = {
     name:'',
     email:''
@@ -38,8 +48,29 @@ export class RestaurantHomeComponent implements OnInit {
   getCurrentPackages(){
     this.foodService.getCurrentPackages(this.currentRestaurant).subscribe(
       (res:any) => {
+        if(!this.currrentPackages && !this.notificaitons){
+          this.mySub?.unsubscribe();
+        }
         this.currrentPackages = res;
-        console.log(this.currrentPackages);
+        //console.log(this.currrentPackages);
+      },
+      (err:any) => {
+        alert(err.error.message);
+        //this.serverErrorMessages = err.error.message;
+      }
+    );
+  }
+
+  getAllNotifications(){
+    this.foodService.getResNotifications(this.currentRestaurant).subscribe(
+      (res:any) => {
+        if(!this.notificaitons && !this.currrentPackages){
+          this.mySub?.unsubscribe();
+        }
+        this.notificaitons = res;
+        console.log("hiiii")
+        console.log(this.notificaitons);
+        this.currentContent = "notifications"
       },
       (err:any) => {
         alert(err.error.message);
@@ -61,10 +92,17 @@ export class RestaurantHomeComponent implements OnInit {
     );
   }
 
+  showNotificaitons(){
+    this.getAllNotifications();
+    
+    //this.router.navigateByUrl('/res-notifications');
+  }
+
   addFoodPackageButton(){
     this.getFoodItems();
     this.currentContent = "addFoodPackageForm"
   }
+
   addFoodPackage(){
     if(this.foodPackage.get('foodName')?.value=="Select food"){
       this.serverErrorMessages = "Please Select a food";
@@ -73,7 +111,7 @@ export class RestaurantHomeComponent implements OnInit {
     else{
       this.foodService.addFoodPackage(this.foodPackage.value,this.currentRestaurant).subscribe(
         (res:any)=>{
-          console.log(res);
+          //console.log(res);
           this.currentContent = 'successMessage';
         },
         (err:any)=>{
@@ -108,12 +146,22 @@ export class RestaurantHomeComponent implements OnInit {
   }
 
   logout(){
+    this.mySub?.unsubscribe();
+    this.currentRestaurant.email='';
+    this.currentRestaurant.name='';
     this.otherService.deleteToken();
     this.router.navigate(['/login']);
   }
+
   continue(){
     this.currentContent = "activities";
     this.ngOnInit();
+  }
+  confirm(notification:any){
+
+  }
+  cancel(notification:any){
+
   }
 
 }

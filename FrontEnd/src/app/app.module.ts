@@ -21,6 +21,7 @@ import { NewPasswordComponent } from './componenets/new-password/new-password.co
 import { FormsModule } from '@angular/forms';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AvailablePackageComponent } from './componenets/available-package/available-package.component';
+import { ResNotificationsComponent } from './componenets/res-notifications/res-notifications.component';
 
 
 
@@ -40,6 +41,7 @@ import { AvailablePackageComponent } from './componenets/available-package/avail
     RecoverPasswordComponent,
     NewPasswordComponent,
     AvailablePackageComponent,
+    ResNotificationsComponent,
   ],
   imports: [
     BrowserModule,

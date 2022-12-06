@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 import { RequestService } from 'src/app/services/food-request.service';
-import { OtherService } from 'src/app/services/other.service';
 
 @Component({
   selector: 'app-available-package',

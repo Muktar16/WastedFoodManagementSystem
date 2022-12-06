@@ -50,5 +50,6 @@ router.post('/get-available-packages', foodPackageController.getAvailablePackage
 
 //routing to restaurant notification controller modules
 router.post('/send-request-notice',resNotificationController.sendRequestNotice)
+router.post('/get-restaurant-notifications',resNotificationController.getAllNotificaions)
 
 module.exports = router;

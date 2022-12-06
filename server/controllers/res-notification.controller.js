@@ -21,11 +21,19 @@ module.exports.sendRequestNotice = async (req, res) =>{
                         notificaiton.addingDate = Date.now();
                         notificaiton.requestId = req.body.requestId;
                         notificaiton.packageId = req.body.packageId;
+                        notificaiton.restaurantEmail = Package.restaurantEmail;
 
                         console.log(notificaiton);
 
-                        notificaiton.save((err, doc) => {
+                        notificaiton.save(async (err, doc) => {
                             if (!err){
+                                var rslt = await FoodPackage.updateOne(
+                                    {packageId:req.body.packageId},
+                                    {
+                                      $set:{status:"Requested by "+request.ngoName}  
+                                    }
+                                )
+                                
                                 console.log("Notificaiton Saved")
                                 res.send(doc);
                             }         
@@ -43,5 +51,14 @@ module.exports.sendRequestNotice = async (req, res) =>{
             }
         }
     );    
+}
+
+
+module.exports.getAllNotificaions = async (req, res) =>{
+    console.log("Notididadfs")
+    let notificaitons = resNotificaiton.find();
+    notificaitons.exec((req, doc) =>{
+        return res.status(200).json(doc);
+    })
 }
 

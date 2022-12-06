@@ -55,5 +55,8 @@ export class RequestService {
   sendRequestNotice(ids:any){
     return this.http.post(environment.apiBaseUrl + '/api/send-request-notice',ids,this.noAuthHeader);
   }
+  getResNotifications(currentRestaurant:any){
+    return this.http.post(environment.apiBaseUrl + '/api/get-restaurant-notifications',currentRestaurant,this.noAuthHeader);
+  }
 }
 
