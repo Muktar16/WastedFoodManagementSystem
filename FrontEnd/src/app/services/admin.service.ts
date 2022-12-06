@@ -39,5 +39,10 @@ export class AdminService {
   removeRestaurant(ngo:any) {
     return this._http.post(environment.apiBaseUrl + '/api/remove-restaurant',ngo,this.noAuthHeader);
   }
+  
+  //get all recent activities
+  getAllActivities(){
+    return this._http.get(environment.apiBaseUrl + '/api/get-all-activities',this.noAuthHeader);
+  }
 
 }

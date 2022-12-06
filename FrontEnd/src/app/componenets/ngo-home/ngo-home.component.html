@@ -1,13 +1,14 @@
-<div class="navbar">
+<div class="navbar navbar-default navbar-static-top">
     <div class="nav-left">
         <a (click)="addRequest()">Add New Request</a>
-        <a href="#news">Notifications</a>
+        <a >Notifications</a>
     </div>
     <div class="nav-middle">
-        <h1 class="welcome-message">Welcome to {{currentNgo.name}}  NGO Dashboard</h1>
+        <h1 class="welcome-message">{{currentNgo.name}}  NGO Dashboard</h1>
     </div>
     <div class="nav-right">
-        <a routerLink="/login" (click)="logout()">Log Out</a>
+      <a >Available packages</a>
+        <a class="logout-btn" routerLink="/login" (click)="logout()">Log Out</a>
     </div> 
 </div>
 
@@ -17,25 +18,32 @@
     <h2>Current Activities</h2>
 </div>
 
-<table class="table">
-    <thead>
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
       <tr>
-        <th scope="col">Date</th>
+        <th scope="col">Request Id</th>
         <th scope="col">Food Type</th>
-        <th scope="col">Restaurant Name</th>
-        <th scope="col">item To get</th>
-        <th scope="col">Get item</th>
-        <th scope="col">Time</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Supply Date</th>
+        <th scope="col">Delivery Location</th>
+        <th scope="col">Status</th>
+        <th scope="col">Update/Delete</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let request of requests; let i=index">
-        <td>{{request.date}}</td>
-        <td>{{request.foodType}}</td>
-        <td>{{request.amount}}</td>
-        <td>{{request.timeLimit}}</td>
-        <!-- <td><button (click)="updateRequest(request,i)">Update</button></td>
-        <td><button (click)="deleteRequest(request)">Delete</button></td> -->
+        <td>{{request.requestId}}</td>
+        <td>{{request.foodName}}</td>
+        <td>{{request.quantity}}</td>
+        <td>{{request.addingDate}}</td>
+        <td>{{request.supplyDate}}</td>
+        <td>{{request.deliveryAddress}}</td>
+        <td>{{request.status}}</td>
+        <td>
+          <button class="btn-primary" (click)="updateRequest(request)">Update</button>
+          <button class="btn-danger" (click)="deleteRequest(request)">Delete</button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -45,8 +53,8 @@
     <h2>Last month Activities</h2>
 </div>
 
-  <table class="table">
-    <thead>
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
       <tr>
         <th scope="col">Date</th>
         <th scope="col">Food Type</th>
@@ -57,14 +65,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let request of requests; let i=index">
+      <!-- <tr *ngFor="let request of requests; let i=index">
         <td>{{request.date}}</td>
         <td>{{request.foodType}}</td>
         <td>{{request.amount}}</td>
-        <td>{{request.timeLimit}}</td>
+        <td>{{request.timeLimit}}</td> -->
         <!-- <td><button (click)="updateRequest(request,i)">Update</button></td>
         <td><button (click)="deleteRequest(request)">Delete</button></td> -->
-      </tr>
+      <!-- </tr> -->
     </tbody>
   </table>
 </div>
@@ -73,6 +81,11 @@
 <!-- add food request -->
 <div *ngIf="currentContent=='addRequest'">
   <div class="main">
+    <div class="alert-box-container">
+      <div class="alert" *ngIf="serverErrorMessages!='false'">
+        {{serverErrorMessages}}
+        </div>
+    </div>
     <form [formGroup]="foodRequest" class="form-inline">
       <div class="input">
         <br>
@@ -83,11 +96,12 @@
         </select>
        <small id="userHelp" class="form-text text-muted"></small>
        <br />
-        <label for="userName">Amount</label>
-        <input formControlName="amount" type="number" class="form-control all1" id="userName" aria-describedby="userHelp" placeholder="Enter needed amount">
+        <label for="userName">Quantity</label>
+        <input formControlName="quantity" type="number" class="form-control all1" id="userName" aria-describedby="userHelp" placeholder="Enter needed amount">
         <small id="userHelp" class="form-text text-muted"></small>
         <br />
         <label for="delivery">Delivery Address</label>
+        <!-- <input ngx-google-places-autocomplete [options]='options'  (onAddressChange)="AddressChange($event)"/> -->
         <input formControlName="deliveryAddress" type="text" class="form-control all1" id="delivery" aria-describedby="userHelp" placeholder="Enter delivery Address">
         <small id="userHelp" class="form-text text-muted"></small>
         <br />
@@ -101,8 +115,9 @@
 </div>
 </div>
 
+
 <!-- show success message -->
-<div class="success-box" *ngIf="currentContent =='successMessage'">
+<!-- <div class="success-box" *ngIf="currentContent=='successMessage'">
   <div id='card' class="animated fadeIn">
     <div id='upper-side'>  
       <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -113,8 +128,48 @@
       <h3 id='status'> Success </h3> 
     </div> 
     <div id='lower-side'> 
-      <p id='message'> Congratulations, your account has been successfully created. You can log In now.</p> 
-      <a routerLink="/ngo-home" id="contBtn">Continue</a> 
+      <p id='message'>Food Request submitted Successfully</p> 
+      <a (click)="continue()" id="contBtn">Continue</a> 
     </div> 
   </div>
+</div> -->
+
+
+
+<!-- update Request form -->
+<div *ngIf="currentContent=='updateForm'">
+  <div class="main">
+    <div class="alert-box-container">
+      <!-- alert-box -->
+      <div class="alert" *ngIf="serverErrorMessages!='false'">
+        {{serverErrorMessages}}
+        </div>
+    </div>
+    <form [formGroup]="updateForm" class="form-inline">
+      <div class="input">
+        <br>
+        <label for="accountType">Update Food Item</label>
+        <select formControlName="foodName" id="accountType" class="form-control all1" aria-describedby="userHelp" placeholder="Select Food">
+          <option>{{requestedTobeUpdated.foodName}}</option>
+          <option *ngFor="let food of foodItems;">{{food.name}}</option>
+        </select>
+       <small id="userHelp" class="form-text text-muted"></small>
+       <br />
+        <label for="userName">Update Quantity</label>
+        <input formControlName="quantity" type="number" class="form-control all1" id="userName" placeholder="{{requestedTobeUpdated.quantity}}">
+        <small id="userHelp" class="form-text text-muted"></small>
+        <br />
+        <label for="delivery">Update Delivery Address</label>
+        <!-- <input ngx-google-places-autocomplete [options]='options'  (onAddressChange)="AddressChange($event)"/> -->
+        <input formControlName="deliveryAddress" type="text" class="form-control all1" id="delivery" aria-describedby="userHelp" placeholder="{{requestedTobeUpdated.deliveryAddress}}">
+        <small id="userHelp" class="form-text"></small>
+        <br />
+        <label for="userName">Update Supply Date</label>
+        <input formControlName="supplyDate" type="date" class="form-control all1" id="password" aria-describedby="passHelp" placeholder="{{requestedTobeUpdated.supplyDate}}">
+        <small id="passHelp" class="form-text"></small>
+        <br/>
+      </div>   
+      <input click type="submit" value="Add Package" (click)="addFoodRequest()" class="submit"/>
+   </form>
+</div>
 </div>

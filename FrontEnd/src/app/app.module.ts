@@ -13,14 +13,16 @@ import { NgoHomeComponent } from './componenets/ngo-home/ngo-home.component';
 import { AdminHomeComponent } from './componenets/admin-home/admin-home.component';
 import { RestaurantHomeComponent } from './componenets/restaurant-home/restaurant-home.component';
 import { AdminLoginComponent } from './componenets/admin-login/admin-login.component';
-import { AddRequestComponent } from './componenets/add-request/add-request.component';
 import { RecoverPasswordComponent } from './componenets/recover-password/recover-password.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { UserService } from './services/user.service';
 import { AuthGuard } from './auth/auth.guard';
 import { NewPasswordComponent } from './componenets/new-password/new-password.component';
 import { FormsModule } from '@angular/forms';
-import { AddPackageComponent } from './componenets/add-package/add-package.component';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { AvailablePackageComponent } from './componenets/available-package/available-package.component';
+
+
 
 
 
@@ -35,10 +37,9 @@ import { AddPackageComponent } from './componenets/add-package/add-package.compo
     AdminHomeComponent,
     RestaurantHomeComponent,
     AdminLoginComponent,
-    AddRequestComponent,
     RecoverPasswordComponent,
     NewPasswordComponent,
-    AddPackageComponent,
+    AvailablePackageComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +47,7 @@ import { AddPackageComponent } from './componenets/add-package/add-package.compo
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    GooglePlaceModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

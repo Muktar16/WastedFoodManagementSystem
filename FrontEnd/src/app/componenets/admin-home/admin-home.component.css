@@ -57,7 +57,7 @@
     background-color: rgb(51, 94, 179);
   }
 
-  .logout-btn{
+  .logout-btn:hover{
     background-color: red;
   }
   .nav-btn{
@@ -124,3 +124,34 @@
   }
 
 
+
+  th, td{
+    text-align: center;
+  }
+
+
+  .alert-box-container{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+    /* The alert message box */
+  .alert {
+    max-width: 400px;
+    max-height: 60px;
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  .success {
+    max-width: 400px;
+    max-height: 60px;
+    padding: 20px;
+    background-color: green; /* Red */
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+  }

@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
-import { AddPackageComponent } from './componenets/add-package/add-package.component';
-import { AddRequestComponent } from './componenets/add-request/add-request.component';
 import { AdminHomeComponent } from './componenets/admin-home/admin-home.component';
 import { AdminLoginComponent } from './componenets/admin-login/admin-login.component';
+import { AvailablePackageComponent } from './componenets/available-package/available-package.component';
 import { HomeComponent } from './componenets/home/home.component';
 import { LoginComponent } from './componenets/login/login.component';
 import { NgoHomeComponent } from './componenets/ngo-home/ngo-home.component';
@@ -23,8 +22,7 @@ const routes: Routes = [
   {path:'admin-home',canActivate:[AuthGuard],component:AdminHomeComponent},
   {path:'admin',component:AdminLoginComponent},
   {path:'forgot-password',component:RecoverPasswordComponent},
-  {path:'add-request',component:AddRequestComponent},
-  {path:'add-package',component:AddPackageComponent},
+  {path:'available-package',component:AvailablePackageComponent}
 ];
 
 @NgModule({

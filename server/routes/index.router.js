@@ -6,6 +6,8 @@ const foodItemController = require('../controllers/foodItem.controller');
 const ngoUserController = require('../controllers/ngo-user.controller');
 const restaurantUserController = require('../controllers/restaurant-user.controller');
 const foodRequestController = require('../controllers/food-request.controller');
+const foodPackageController = require('../controllers/foodPackage.controller');
+const resNotificationController = require('../controllers/res-notification.controller');
 
 //routing to admin controller modules
 router.post('/admin-authenticate', ctrlAdmin.authenticate);
@@ -34,5 +36,19 @@ router.post('/remove-food', foodItemController.removeFoodItem);
 
 //routing to foodRequest controller modules
 router.post('/add-food-request', foodRequestController.addFoodRequest);
+router.post('/get-current-requests', foodRequestController.getCurrentRequests);
+router.get('/get-all-pending-requests', foodRequestController.getAllPendingRequests);
+router.post('/remove-request', foodRequestController.removeRequest);
+
+
+//routing to foodPackage controller modules
+router.post('/add-food-package', foodPackageController.addFoodPackage);
+router.post('/get-current-packages', foodPackageController.getCurrentPackages);
+router.get('/get-all-available-packages', foodPackageController.getAllAvailablePackages);
+router.post('/get-available-packages', foodPackageController.getAvailablePackages);
+
+
+//routing to restaurant notification controller modules
+router.post('/send-request-notice',resNotificationController.sendRequestNotice)
 
 module.exports = router;

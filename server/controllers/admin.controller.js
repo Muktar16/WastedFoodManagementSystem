@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Admin = mongoose.model('admin');
+const Activity = mongoose.model('activity')
 
 module.exports.authenticate = (req, res, next) => {
     let email = req.body.email;
@@ -21,4 +22,11 @@ module.exports.authenticate = (req, res, next) => {
         else return res.status(200).json({"status":"false","message":"This is not an Admin email"});
      }
     );
+}
+
+module.exports.getAllActivities = (req, res, next) => {
+  var activities = Activity.find();
+    activities.exec((req, doc) =>{
+        return res.status(200).json(doc);
+    })
 }

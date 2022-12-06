@@ -3,12 +3,14 @@
         "PORT": 3000,
         "MONGODB_URI": "mongodb://localhost:27017/UserDatabase",
         "JWT_SECRET": "SECRET#123",
-        "JWT_EXP": "10m"
+        "JWT_EXP": "60m",
+        "WAITING_MESSAGE":"Waiting for Restaurant Confirmation"
     },
     "production": {
         "PORT": 80,
         "MONGODB_URI": "mongodb://localhost:27017/UserDatabase",
         "JWT_SECRET": "SECRET#123",
-        "JWT_EXP": "2m"
+        "JWT_EXP": "60m",
+        "WAITING_MESSAGE":"Waiting for Restaurant Confirmation"
     }
 }

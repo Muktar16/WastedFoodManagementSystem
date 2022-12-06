@@ -1,12 +1,15 @@
 <div class="navbar">
     <div class="nav-left">
+      <a class="nav-btn" routerLink="\admin-home" (click)="refresh()">Home</a>
         <a class="nav-btn" (click)="ngoList()">NGO List</a>
         <a class="nav-btn" (click)="restaurantList()">Restaurant List</a>
+        <a class="nav-btn" (click)="showPendingRequests()">Pending Food Requests</a>
     </div>
     <div class="nav-middle">
-        <h1 class="welcome-message">Wasted Food Management System Admin Panel</h1>
+        <h1 class="welcome-message">Admin Panel</h1>
     </div>
     <div class="nav-right">
+      <a class="nav-btn" (click)="showAvailablePackages()">Available Food Packages</a>
         <a class="nav-btn" (click)="itemList()">Food Items</a>
         <a class="nav-btn" (click)="logOut()" routerLink="/admin">Log Out</a>
     </div> 
@@ -18,26 +21,19 @@
         <h2>Current Activities</h2>
     </div>
     
-    <table class="table">
-        <thead>
+    <table class="table table-bordered border-primary table-info">
+        <thead class="table-dark">
           <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Food Type</th>
-            <th scope="col">Restaurant Name</th>
-            <th scope="col">item To get</th>
-            <th scope="col">Get item</th>
-            <th scope="col">Time</th>
+            <th scope="col">Index</th>
+            <th scope="col">Activity Details</th>
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let request of requests; let i=index">
-            <td>{{request.date}}</td>
-            <td>{{request.foodType}}</td>
-            <td>{{request.amount}}</td>
-            <td>{{request.timeLimit}}</td>
-            <td><button (click)="updateRequest(request,i)">Update</button></td>
-            <td><button (click)="deleteRequest(request)">Delete</button></td>
-          </tr> -->
+          <tr *ngFor="let activity of activities; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{activity.details}}</td>
+            <td><button class="remove-btn" (click)="deleteRequest(activity)">Delete Notification</button></td>
+          </tr>
         </tbody>
       </table>
 </div>
@@ -47,8 +43,8 @@
         <h2>Registerd NGO list</h2>
     </div>
     
-    <table class="table">
-        <thead>
+    <table class="table table-bordered border-primary table-info">
+        <thead class="table-dark">
           <tr>
             <th scope="col">NGO Name</th>
             <th scope="col">NGO Email</th>
@@ -65,7 +61,7 @@
             <td>{{ngo.phone}}</td>
             <td>{{ngo.registrationNo}}</td>
             <td>{{ngo.registrationNo}}</td>
-            <td><button (click)="removeNgo(ngo)">Remove NGO</button></td>
+            <td><button class="remove-btn btn-danger" (click)="removeNgo(ngo)">Remove NGO</button></td>
           </tr>
         </tbody>
       </table>
@@ -76,8 +72,8 @@
         <h2>Registerd Restaurant list</h2>
     </div>
     
-    <table class="table">
-        <thead>
+    <table class="table table-bordered border-primary table-info">
+      <thead class="table-dark">
           <tr>
             <th scope="col">Restaurant Name</th>
             <th scope="col">Restaurant Email</th>
@@ -92,23 +88,24 @@
                 <td>{{restaurant.email}}</td>
                 <td>{{restaurant.phone}}</td>
                 <td>{{restaurant.address}}</td>
-                <td><button (click)="removeRestaurant(restaurant)">Remove Restaurant</button></td>
+                <td><button class="remove-btn btn-danger" (click)="removeRestaurant(restaurant)">Remove Restaurant</button></td>
               </tr>
         </tbody>
       </table>
 </div>
 
+<!-- show food item list -->
 <div *ngIf="mainContent=='itemList'">
     <div class="caption1">
         <h2>Food Item list</h2>
     </div>
     
-    <table class="table">
-        <thead>
+    <table class="table table-bordered border-primary table-info">
+      <thead class="table-dark">
           <tr>
             <th scope="col">Item No</th>
             <th scope="col">Name of the Food Item</th>
-            <th scope="col">Adding Date</th>
+            <th scope="col">Date Added</th>
             <th scope="col">Remove Item</th>
           </tr>
         </thead>
@@ -117,12 +114,21 @@
             <td>{{i+1}}</td>
             <td>{{food.name}}</td>
             <td>{{food.addingDate}}</td>
-            <td><button (click)="removeFood(food)">Remove This Food</button></td>
+            <td><button class="remove-btn btn-danger" (click)="removeFood(food)">Remove This Food</button></td>
           </tr>
         </tbody>
       </table>
 
       <button class="submit1" *ngIf="!addFoodForm" (click)="activateAddFoodForm()">Add New Food Item</button>
+      <div class="alert-box-container">
+        <div class="success" *ngIf="showSucessMessage">
+          Added Successfully
+        </div>
+        <!-- Error message -->
+        <div class="alert" *ngIf="serverErrorMessages!='false'">
+          {{serverErrorMessages}}
+        </div>
+      </div>
       <form [formGroup]="FoodItem" class="form-inline" *ngIf="addFoodForm">
         <div class="input">
             <br>
@@ -132,3 +138,72 @@
         <input click type="submit" (click)="addNewFood()" value="Add Item"  class="submit" />
      </form>
 </div>
+
+
+<div *ngIf="mainContent=='allRequests'">
+  <div class="caption1">
+    <h2>Current Pending Requests</h2>
+</div>
+
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
+      <tr>
+        <th scope="col">Request Id</th>
+        <th scope="col">Uploaded By(NGO)</th>
+        <th scope="col">Food Type</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Supply Date</th>
+        <th scope="col">Delivery Location</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of allPendingRequests; let i=index">
+        <td>{{request.requestId}}</td>
+        <td>{{request.ngoName}}</td>
+        <td>{{request.foodName}}</td>
+        <td>{{request.quantity}}</td>
+        <td>{{request.addingDate}}</td>
+        <td>{{request.supplyDate}}</td>
+        <td>{{request.deliveryAddress}}</td>
+       <td><button class="btn-danger" (click)="deleteRequest(request)">Caccel Request</button></td>
+        <!-- <td><div class="alert alert-success alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          Success! message sent successfully.
+      </div></td> -->
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div *ngIf="mainContent=='allPackages'">
+    <div class="caption1">
+      <h2>Current Pending Requests</h2>
+  </div>
+  
+  <table class="table table-bordered border-primary table-info">
+    <thead class="table-dark">
+        <tr>
+          <th scope="col">Package Id</th>
+          <th scope="col">Uploaded By(Restaurant)</th>
+          <th scope="col">Food Type</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Date Added</th>
+          <th scope="col">Expiry Date</th>
+          <th scope="col">Delete Package</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let package of allPendingPackages; let i=index">
+          <td>{{package.packageId}}</td>
+          <td>{{package.restaurantName}}</td>
+          <td>{{package.foodName}}</td>
+          <td>{{package.quantity}}</td>
+          <td>{{package.addingDate}}</td>
+          <td>{{package.expiryDate}}</td>
+          <td><button class="btn-danger" (click)="deletePackage(package)">Caccel Request</button></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>

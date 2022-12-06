@@ -77,7 +77,12 @@ export class LoginComponent implements OnInit {
         } 
       },
       err => {
-        this.serverErrorMessages = err.error.message;
+        if(err.status == 422){
+          this.serverErrorMessages = err.error.message;
+        }
+        else {
+          this.serverErrorMessages = 'Oops!! Server Not Responding';
+        }
       }
     );
   }

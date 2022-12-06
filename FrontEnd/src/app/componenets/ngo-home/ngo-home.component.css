@@ -79,6 +79,9 @@
   color: white;
   }
   
+  .welcome-message{
+    font-size: 30px;
+  }
   
     p{
       text-align: center;
@@ -220,6 +223,14 @@
       opacity: 60%;
     }
 
+    .col{
+      text-align: center;
+    }
+  
+    th, td{
+      text-align: center;
+    }
+
 
     /*success alert*/
   .success-box { 
@@ -301,6 +312,7 @@
   -o-transition: all .4s ease; 
   transition: all .4s ease; 
 }
+
 
 
 

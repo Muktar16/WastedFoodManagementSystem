@@ -1,0 +1,31 @@
+<div class="flex-div">
+    <button class="btn-danger" (click)="backButton()">Back</button>
+</div>
+  <div class="caption1">
+    <h2>Your Request Uploaded Successfully <br>
+        Following are the Available Packages Related to your Request
+    </h2>
+</div>
+
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
+      <tr>
+        <th scope="col">Package ID</th>
+        <th scope="col">Food Type</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Expiry Date</th>
+        <th scope="col">Donor Restaurant</th>
+        <th scope="col">Send Request For This Package</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let package of availablePackages; let i=index">
+        <td>{{package.packageId}}</td>
+        <td>{{package.foodName}}</td>
+        <td>{{package.quantity}}</td>
+        <td>{{package.expiryDate}}</td>
+        <td>{{package.restaurantName}}</td>
+        <td><button class="btn-primary" (click)="sendRequest(package)">Send Request</button></td>
+      </tr>
+    </tbody>
+  </table>

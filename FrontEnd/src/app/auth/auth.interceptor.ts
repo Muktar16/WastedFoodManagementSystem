@@ -2,7 +2,6 @@ import { HttpInterceptor, HttpRequest, HttpHandler } from "@angular/common/http"
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { tap } from "rxjs";
-import { UserService } from "src/app/services/user.service";
 import { OtherService } from "../services/other.service";
 
 

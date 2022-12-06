@@ -39,8 +39,6 @@ export class UserService {
     return this._http.post(environment.apiBaseUrl + '/api/recovery-mail',recoveryData,this.noAuthHeader);
   }
 
-  
-
 
   getFoodItems(){
     return this._http.get(environment.apiBaseUrl + '/api/get-foodItems',this.noAuthHeader);

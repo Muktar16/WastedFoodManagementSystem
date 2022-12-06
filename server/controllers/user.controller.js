@@ -5,37 +5,6 @@ const Ngo = mongoose.model('ngoUser');
 const Restaurant = mongoose.model('restUser');
 const jwt = require('jsonwebtoken');
 
-// module.exports.authenticate = (req, res, next) => {
-//     let userType = req.body.userType;
-//     let email = req.body.email;
-//     let password = req.body.password;
-
-//     if(userType=="NGO Representative"){
-//         Ngo.findOne({ ngoEmail: email },(err, user) => {
-//             if(user){
-//               if(!user.verifyPassword(password)){
-//                  return res.status(200).json({"status":"false", "message":"Wrong Password", token:""});
-//               }
-//               else return res.status(200).json({"status":"true", "userType":"NGO Representative", "token": user.generateJwt()});
-//             }
-//             else return res.status(200).json({"status":"false","message":"Email is not registered"});
-//          }
-//         );
-//     }
-//     else if(userType=="Restaurant Representative"){
-//         Restaurant.findOne({ email: req.body.email },(err, user) => {
-//             if(user){
-//               if(!user.verifyPassword(password)){
-//                  return res.status(200).json({"status":"false", "message":"Wrong Password", token:""});
-//               }
-//               else return res.status(200).json({"status":"true", "userType":"Restaurant Representative", "token": user.generateJwt()});
-//             }
-//             else return res.status(200).json({"status":"false","message":"Email is not registered"});
-//          }
-//      );
-//     }
-    
-// }
 
 module.exports.userProfile = async (req, res) =>{
 

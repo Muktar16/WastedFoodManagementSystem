@@ -10,3 +10,6 @@ require('./rest_user.model');
 require('./admin.model');
 require('./foodItem.model');
 require('./foodRequest.model');
+require('./foodPackage.model');
+require('./activity.model');
+require('./restaurant-notification.model');
