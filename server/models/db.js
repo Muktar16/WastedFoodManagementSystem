@@ -13,3 +13,4 @@ require('./foodRequest.model');
 require('./foodPackage.model');
 require('./activity.model');
 require('./restaurant-notification.model');
+require('./ngoNotificaiton.model');

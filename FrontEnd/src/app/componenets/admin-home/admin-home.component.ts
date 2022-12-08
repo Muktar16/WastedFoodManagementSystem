@@ -5,6 +5,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { RequestService } from 'src/app/services/food-request.service';
 import { OtherService } from 'src/app/services/other.service';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-home',
@@ -18,7 +19,7 @@ export class AdminHomeComponent implements OnInit {
   //data objects
   serverErrorMessages = 'false';
   showSucessMessage = false;
-  mainContent='activities';
+  mainContent='allRequests';
   ngoLists:any;
   restaurantLists:any;
   foodItems:any;
@@ -34,6 +35,7 @@ export class AdminHomeComponent implements OnInit {
   //methods
   ngOnInit(): void {
     this.getActivities();
+    this.showPendingRequests();
   }
   getActivities(){
     this.adminService.getAllActivities().subscribe(
@@ -42,8 +44,7 @@ export class AdminHomeComponent implements OnInit {
         console.log(this.activities);
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        //Swal.fire("Error",err.error.message,"error");
       }
     );
   }
@@ -75,8 +76,7 @@ export class AdminHomeComponent implements OnInit {
         console.log(this.foodItems);
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        Swal.fire("Error",err.error.message,"error");
       }
     );
   }
@@ -88,8 +88,7 @@ export class AdminHomeComponent implements OnInit {
         console.log(this.restaurantLists);
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        Swal.fire("Error",err.error.message,"error");
       }
     );
   }
@@ -113,7 +112,7 @@ export class AdminHomeComponent implements OnInit {
         this.getRestaurantList();
       },
       (err:any)=>{
-        alert(err.error.message);
+        Swal.fire("Error",err.error.message,"error");
       }
     )
   }
@@ -125,7 +124,7 @@ export class AdminHomeComponent implements OnInit {
         console.log(this.ngoLists);
       },
       (err:any) => {
-        alert(err.error.message);
+        Swal.fire("Error",err.error.message,"error");
         //this.serverErrorMessages = err.error.message;
       }
     );
@@ -138,12 +137,12 @@ export class AdminHomeComponent implements OnInit {
   addNewFood(){
     this.userService.addNewFood(this.FoodItem.value).subscribe(
       (res:any) => {
-        this.showSucessMessage = true;
-        setTimeout(() => {
-          this.showSucessMessage = false;
+
+        Swal.fire("Succeed","Successfully Added food to the System","success").then(result=>{
           this.addFoodForm = false;
           this.getFoodItems();
-        }, 1000);
+          //window.location.reload();
+        })
       },
       (err:any) => {
         this.serverErrorMessages = err.error.message;
@@ -158,7 +157,7 @@ export class AdminHomeComponent implements OnInit {
         this.getFoodItems();
       },
       (err:any)=>{
-        alert(err.error.message);
+        Swal.fire("Error",err.error.message,"error");
       }
     )
   }
@@ -171,7 +170,7 @@ export class AdminHomeComponent implements OnInit {
         this.mainContent = 'allRequests'
       },
       (err:any) => {
-        alert(err.error.message);
+        Swal.fire("Error",err.error.message,"error");
         //this.serverErrorMessages = err.error.message;
       }
     );
@@ -186,6 +185,7 @@ export class AdminHomeComponent implements OnInit {
       console.log("Implement delete functionality here");
     }
   }
+
   showAvailablePackages(){
     this.foodService.getAllAvailablePackages().subscribe(
       (res:any) => {
@@ -194,11 +194,11 @@ export class AdminHomeComponent implements OnInit {
         this.mainContent = 'allPackages'
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        Swal.fire("Error",err.error.message,"error");
       }
     );
   }
+
   deletePackage(Package:any){
     if(confirm("Are you sure to delete ")) {
       console.log("Implement delete functionality here");

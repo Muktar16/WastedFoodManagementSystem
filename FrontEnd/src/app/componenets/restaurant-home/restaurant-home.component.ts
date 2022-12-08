@@ -1,3 +1,4 @@
+import { ConditionalExpr } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,7 +30,6 @@ export class RestaurantHomeComponent implements OnInit {
   currentContent = 'activities';
   foodItems:any;
   currrentPackages:any;
-  notificaitons:any;
   notifications:any;
   packageToBeUpdated:any;
   currentRestaurant = {
@@ -66,12 +66,12 @@ export class RestaurantHomeComponent implements OnInit {
   getAllNotifications(){
     this.foodService.getResNotifications(this.currentRestaurant).subscribe(
       (res:any) => {
-        if(!this.notificaitons && !this.currrentPackages){
+        if(!this.notifications && !this.currrentPackages){
           this.mySub?.unsubscribe();
         }
-        this.notificaitons = res;
+        this.notifications = res;
         console.log("hiiii")
-        console.log(this.notificaitons);
+        console.log(this.notifications);
         //this.currentContent = "notifications"
       },
       (err:any) => {
@@ -98,6 +98,7 @@ export class RestaurantHomeComponent implements OnInit {
 
   showNotificaitons(){
     this.getAllNotifications();
+    this.currentContent = "notifications"
   }
 
   addFoodPackageButton(){
@@ -126,7 +127,21 @@ export class RestaurantHomeComponent implements OnInit {
   }
 
   pendingRequestList(){
-    this.currentContent = "pendingRequests";
+    this.getAllRequests();
+  }
+
+  allPendingRequests:any;
+  getAllRequests(){
+    this.foodService.getAllPendingRequests().subscribe(
+      (res:any) => {
+        console.log("Success");
+        this.allPendingRequests = res;
+        this.currentContent = "pendingRequests";
+      },
+      (err:any) => {
+        Swal.fire("Error",err.error.message,"error");
+      }
+    );
   }
 
   foodPackageForm(){
@@ -140,7 +155,7 @@ export class RestaurantHomeComponent implements OnInit {
         console.log(this.foodItems);
       },
       (err:any) => {
-        alert(err.error.message);
+        Swal.fire("Error",err.error.message,"error");
         //this.serverErrorMessages = err.error.message;
       }
     );
@@ -158,8 +173,23 @@ export class RestaurantHomeComponent implements OnInit {
     this.currentContent = "activities";
     this.ngOnInit();
   }
+  ids = {
+    requestId:'',
+    packageId:''
+  }
   confirm(notification:any){
-
+    this.ids.packageId = notification.packageId;
+    this.ids.requestId = notification.requestId;
+    this.foodService.confirmRequest(this.ids).subscribe(
+      (res:any) => {
+        Swal.fire("Succeed","Your Confirmation message Has been sent successfully","success").then(result=>{
+          window.location.reload();
+        })
+      },
+      (err:any) => {
+        Swal.fire("Error",err.error.message,"error");
+      }
+    );
   }
   cancel(notification:any){
 
@@ -168,17 +198,24 @@ export class RestaurantHomeComponent implements OnInit {
     this.packageToBeUpdated = Package;
     this.currentContent = 'updateForm';
   }
+
   updateFoodPackage(){
+
+    this.packageToBeUpdated.foodName = this.updatedPackage.get("foodName")?.value;
+    this.packageToBeUpdated.quantity = this.updatedPackage.get("quantity")?.value;
+    this.packageToBeUpdated.expiryDate = this.updatedPackage.get("expiryDate")?.value;
+    console.log(this.packageToBeUpdated);
     this.foodService.updatePackage(this.packageToBeUpdated).subscribe(
       res=>{
-        if(res){
+        console.log("HI")
           Swal.fire("Succeed","Package updated Successfully","success").then(result=>{
             window.location.reload();
           });
-        }
     },
     err=>{
-      Swal.fire("Error",err.error.message,"error");
+      Swal.fire("Error",err.error.message,"error").then(result=>{
+        window.location.reload();
+      });;
     })
   }
   
@@ -209,6 +246,12 @@ export class RestaurantHomeComponent implements OnInit {
       })
       
     }
+  }
+
+  notifyNGO(request:any){
+    Swal.fire("Succeed","Notification Sent to the NGO","success").then(result=>{
+      window.location.reload();
+    });
   }
 
 }

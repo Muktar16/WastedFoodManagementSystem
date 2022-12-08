@@ -6,6 +6,7 @@ import { RequestService } from 'src/app/services/food-request.service';
 import { OtherService } from 'src/app/services/other.service';
 import { UserService } from 'src/app/services/user.service';
 import { interval, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class NgoHomeComponent implements OnInit {
     private requestService:RequestService,private otherService:OtherService) { 
 
       this.mySub = interval(3000).subscribe((func => {
-        this.getCurrentRequests();
+        //this.getAllNotifications();
       }))
     }
 
@@ -49,6 +50,46 @@ export class NgoHomeComponent implements OnInit {
     deliveryAddress:new FormControl(null,[Validators.required]),
     supplyDate:new FormControl(null,[Validators.required]),
   });
+
+  confirm(notification:any){
+    this.requestService.changeRequestStatus(notification).subscribe(
+      (res:any) => {
+       
+       Swal.fire("Succeed","Successfull","success").then(result=>{
+        window.location.reload();
+       })
+      },
+      (err:any) => {
+        alert(err.error.message);
+        //this.serverErrorMessages = err.error.message;
+      }
+    );
+  }
+
+  showNotificaitons(){
+    this.getAllNotifications();
+  }
+
+
+  notifications:any;
+  getAllNotifications(){
+    this.requestService.getNgoNotifications(this.currentNgo).subscribe(
+      (res:any) => {
+        if(!this.notifications){
+          this.mySub?.unsubscribe();
+        }
+        this.notifications = res;
+        this.currentContent = "notifications"
+        console.log("hiiii")
+        console.log(this.notifications);
+        //this.currentContent = "notifications"
+      },
+      (err:any) => {
+        alert(err.error.message);
+        //this.serverErrorMessages = err.error.message;
+      }
+    );
+  }
 
 
   ngOnInit(): void {
@@ -119,8 +160,11 @@ export class NgoHomeComponent implements OnInit {
         },
         (err:any)=>{
           if(err.status == 422)
-            this.serverErrorMessages = err.error.message;
-          else this.serverErrorMessages = "Oops!! Server Connection Failed....";
+            Swal.fire("Error",err.error.message);
+            //this.serverErrorMessages = err.error.message;
+          else 
+            Swal.fire("Error","Oops!! Server Connection Failed....","error");
+          //this.serverErrorMessages = "Oops!! Server Connection Failed....";
           //alert(err.errror.message);
         }
       )
@@ -134,34 +178,98 @@ export class NgoHomeComponent implements OnInit {
         console.log(this.foodItems);
       },
       (err:any) => {
-        alert(err.error.message);
+        //alert(err.error.message);
         //this.serverErrorMessages = err.error.message;
       }
     );
   }
+
   updateRequest(requestToBeUpdated:any){
     this.getFoodItems();
     this.currentContent = "updateForm";
     this.requestedTobeUpdated = requestToBeUpdated;
   }
 
-  deleteRequest(request:any){
-    if(window.confirm("The Request will Be deleted permanantly.?")){
-      this.requestService.removeRequest(request).subscribe(
-        (res:any)=>{
-          console.log(res);
-          this.getCurrentRequests();
-        },
-        (err:any)=>{
-          alert(err.error.message);
-        }
-      )
-    }
+  getAvailablePacakges(){
+    this.requestService.getAllPendingRequests().subscribe(
+      (res:any) => {
+        this.requests = res;
+        console.log(this.requests);
+        this.currentContent = 'allRequests'
+      },
+      (err:any) => {
+        Swal.fire("Error",err.error.message,"error");
+        //this.serverErrorMessages = err.error.message;
+      }
+    );
+  }
+  ids = {
+    requestId:'',
+    packageId:''
+  }
+  sendRequest(Package:any){
+    this.ids.packageId = Package.packageId;
+    this.ids.requestId = this.requestService.getRecentRequest().requestId;
+    this.requestService.sendRequestNotice(this.ids).subscribe(
+      (res:any) => {
+        alert("Your Request Has been sent. You will be notified after Restaurant Confirmation");
+        console.log(res);
+        this.router.navigateByUrl('/ngo-home');
+      },
+      (err:any) => {
+        alert(err.error.message);
+        //this.serverErrorMessages = err.error.message;
+      }
+    );
+  
   }
 
-  // continue(){
-  //   this.currentContent = "activities";
-  //   this.ngOnInit();
-  // }
+ 
+
+  updateFoodRequest(){
+    this.requestedTobeUpdated.foodName = this.updateForm.get("foodName")?.value;
+    this.requestedTobeUpdated.quantity = this.updateForm.get("quantity")?.value;
+    this.requestedTobeUpdated.expiryDate = this.updateForm.get("expiryDate")?.value;
+    console.log(this.requestedTobeUpdated);
+
+    this.requestService.updateRequest(this.requestedTobeUpdated).subscribe(
+      res=>{
+        console.log("HI")
+          Swal.fire("Succeed","Request updated Successfully","success").then(result=>{
+            window.location.reload();
+          });
+    },
+    err=>{
+      Swal.fire("Error",err.error.message,"error").then(result=>{
+        window.location.reload();
+      });;
+    })
+  }
+
+  deleteRequest(request:any){
+    Swal.fire({title: 'Are you sure?',text: "You won't be able to revert this!",
+        icon: 'warning',showCancelButton: true,confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',confirmButtonText: 'Yes, delete it!'}).then((result) => {
+        if (result.isConfirmed) {
+          this.requestService.removeRequest(request).subscribe(
+            (res:any) =>{
+              if(res){
+                Swal.fire('Deleted!','Your food Request has been deleted.','success').then(result=>{
+                  this.getCurrentRequests();
+                  window.location.reload();
+                });
+                
+              }    
+            },
+            (err:any)=>{
+              Swal.fire('Error Deleting',err.error.message,'error');
+            }
+            
+          )
+        }
+      })
+
+  }
+
 
 }

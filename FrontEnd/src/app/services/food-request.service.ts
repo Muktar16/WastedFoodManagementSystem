@@ -58,11 +58,23 @@ export class RequestService {
   getResNotifications(currentRestaurant:any){
     return this.http.post(environment.apiBaseUrl + '/api/get-restaurant-notifications',currentRestaurant,this.noAuthHeader);
   }
+  getNgoNotifications(currentNgo:any){
+    return this.http.post(environment.apiBaseUrl + '/api/get-ngo-notifications',currentNgo,this.noAuthHeader);
+  }
   removePackage(Package:any){
     return this.http.post(environment.apiBaseUrl + '/api/remove-package',Package,this.noAuthHeader);
   }
   updatePackage(packageToBeUpdated:any){
     return this.http.post(environment.apiBaseUrl + '/api/update-package',packageToBeUpdated,this.noAuthHeader);
+  }
+  updateRequest(request:any){
+    return this.http.post(environment.apiBaseUrl + '/api/update-request',request,this.noAuthHeader);
+  }
+  confirmRequest(ids:any){
+    return this.http.post(environment.apiBaseUrl + '/api/confirm-request',ids,this.noAuthHeader);
+  }
+  changeRequestStatus(notification:any){
+    return this.http.post(environment.apiBaseUrl + '/api/change-request-status',notification,this.noAuthHeader);
   }
 }
 

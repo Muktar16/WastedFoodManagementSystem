@@ -1,6 +1,5 @@
 <div class="navbar">
     <div class="nav-left">
-      <a class="nav-btn" routerLink="\admin-home" (click)="refresh()">Home</a>
         <a class="nav-btn" (click)="ngoList()">NGO List</a>
         <a class="nav-btn" (click)="restaurantList()">Restaurant List</a>
         <a class="nav-btn" (click)="showPendingRequests()">Pending Food Requests</a>
@@ -155,7 +154,7 @@
         <th scope="col">Date Added</th>
         <th scope="col">Supply Date</th>
         <th scope="col">Delivery Location</th>
-        <th scope="col">Delete</th>
+        <!-- <th scope="col">Delete</th> -->
       </tr>
     </thead>
     <tbody>
@@ -167,11 +166,7 @@
         <td>{{request.addingDate}}</td>
         <td>{{request.supplyDate}}</td>
         <td>{{request.deliveryAddress}}</td>
-       <td><button class="btn-danger" (click)="deleteRequest(request)">Caccel Request</button></td>
-        <!-- <td><div class="alert alert-success alert-dismissable">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          Success! message sent successfully.
-      </div></td> -->
+       <!-- <td><button class="btn-danger" (click)="deleteRequest(request)">Caccel Request</button></td> -->
       </tr>
     </tbody>
   </table>
@@ -179,7 +174,7 @@
 
   <div *ngIf="mainContent=='allPackages'">
     <div class="caption1">
-      <h2>Current Pending Requests</h2>
+      <h2>Available Food Package</h2>
   </div>
   
   <table class="table table-bordered border-primary table-info">
@@ -191,7 +186,7 @@
           <th scope="col">Quantity</th>
           <th scope="col">Date Added</th>
           <th scope="col">Expiry Date</th>
-          <th scope="col">Delete Package</th>
+          <!-- <th scope="col">Delete Package</th> -->
         </tr>
       </thead>
       <tbody>
@@ -202,7 +197,7 @@
           <td>{{package.quantity}}</td>
           <td>{{package.addingDate}}</td>
           <td>{{package.expiryDate}}</td>
-          <td><button class="btn-danger" (click)="deletePackage(package)">Caccel Request</button></td>
+          <!-- <td><button class="btn-danger" (click)="deletePackage(package)">Caccel Request</button></td> -->
         </tr>
       </tbody>
     </table>

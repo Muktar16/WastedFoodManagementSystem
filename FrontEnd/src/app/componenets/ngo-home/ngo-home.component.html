@@ -1,13 +1,13 @@
 <div class="navbar navbar-default navbar-static-top">
     <div class="nav-left">
         <a (click)="addRequest()">Add New Request</a>
-        <a >Notifications</a>
+        <a (click)="showNotificaitons()">Notifications</a>
     </div>
     <div class="nav-middle">
         <h1 class="welcome-message">{{currentNgo.name}}  NGO Dashboard</h1>
     </div>
     <div class="nav-right">
-      <a >Available packages</a>
+      <a (click)="getAvailablePacakges()">Available packages</a>
         <a class="logout-btn" routerLink="/login" (click)="logout()">Log Out</a>
     </div> 
 </div>
@@ -49,7 +49,7 @@
   </table>
 
 
-<div class="caption2">
+<!-- <div class="caption2">
     <h2>Last month Activities</h2>
 </div>
 
@@ -65,18 +65,84 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <tr *ngFor="let request of requests; let i=index">
+     <tr *ngFor="let request of requests; let i=index">
         <td>{{request.date}}</td>
         <td>{{request.foodType}}</td>
         <td>{{request.amount}}</td>
         <td>{{request.timeLimit}}</td> -->
         <!-- <td><button (click)="updateRequest(request,i)">Update</button></td>
-        <td><button (click)="deleteRequest(request)">Delete</button></td> -->
-      <!-- </tr> -->
+        <td><button (click)="deleteRequest(request)">Delete</button></td> 
+       </tr>
+    </tbody>
+  </table>-->
+</div> 
+
+
+<div *ngIf="currentContent=='allRequests'">
+  <div class="caption1">
+    <h2>Current Pending Requests</h2>
+</div>
+
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
+      <tr>
+        <th scope="col">Request Id</th>
+        <th scope="col">Uploaded By(NGO)</th>
+        <th scope="col">Food Type</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Supply Date</th>
+        <th scope="col">Delivery Location</th>
+        <th scope="col">Send Request</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of requests; let i=index">
+        <td>{{request.requestId}}</td>
+        <td>{{request.ngoName}}</td>
+        <td>{{request.foodName}}</td>
+        <td>{{request.quantity}}</td>
+        <td>{{request.addingDate}}</td>
+        <td>{{request.supplyDate}}</td>
+        <td>{{request.deliveryAddress}}</td>
+       <td><button class="btn-danger" (click)="sendRequest(request)">Send Request</button></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- notificaitons -->
+<div *ngIf="currentContent=='notifications'">
+  <div class="caption1">
+    <h2>All Notifications</h2>
+</div>
+
+<table class="table table-bordered border-primary table-info">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Details</th>
+        <th scope="col">Time</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let notification of notifications; let i=index">
+        <td>{{i+1}}</td>
+        <td>{{notification.message}}</td>
+        <td>{{notification.addingDate}}</td>
+        <td *ngIf="notification.status=='running'">
+            <button class="remove-btn btn-primary" (click)="confirm(notification)">Confirm Receiption</button>
+            <!-- <button class="remove-btn btn-secondary" (click)="cancel(notification)">Cancel</button> -->
+        </td>
+        <td *ngIf="notification.status=='done'">
+          Completed
+          <!-- <button class="remove-btn" (click)="confirm(notification)">Mark as Done</button> -->
+      </td>
+      </tr>
     </tbody>
   </table>
 </div>
-
 
 <!-- add food request -->
 <div *ngIf="currentContent=='addRequest'">
@@ -169,7 +235,7 @@
         <small id="passHelp" class="form-text"></small>
         <br/>
       </div>   
-      <input click type="submit" value="Add Package" (click)="addFoodRequest()" class="submit"/>
+      <input click type="submit" value="Add Package" (click)="updateFoodRequest()" class="submit"/>
    </form>
 </div>
 </div>

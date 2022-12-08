@@ -8,6 +8,7 @@ const restaurantUserController = require('../controllers/restaurant-user.control
 const foodRequestController = require('../controllers/food-request.controller');
 const foodPackageController = require('../controllers/foodPackage.controller');
 const resNotificationController = require('../controllers/res-notification.controller');
+const ngoNotificationController = require('../controllers/ngoNotification.controller');
 
 //routing to admin controller modules
 router.post('/admin-authenticate', ctrlAdmin.authenticate);
@@ -39,6 +40,9 @@ router.post('/add-food-request', foodRequestController.addFoodRequest);
 router.post('/get-current-requests', foodRequestController.getCurrentRequests);
 router.get('/get-all-pending-requests', foodRequestController.getAllPendingRequests);
 router.post('/remove-request', foodRequestController.removeRequest);
+router.post('/update-request', foodRequestController.updateRequest);
+router.post('/change-request-status', foodRequestController.changeStatus);
+
 
 
 //routing to foodPackage controller modules
@@ -55,5 +59,9 @@ router.post('/update-package', foodPackageController.updatePackage);
 //routing to restaurant notification controller modules
 router.post('/send-request-notice',resNotificationController.sendRequestNotice)
 router.post('/get-restaurant-notifications',resNotificationController.getAllNotificaions)
+
+//ngo-notification 
+router.post('/confirm-request',ngoNotificationController.confirmRequest)
+router.post('/get-ngo-notifications',ngoNotificationController.getAllNotificaions)
 
 module.exports = router;

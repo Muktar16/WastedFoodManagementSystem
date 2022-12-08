@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 import { RequestService } from 'src/app/services/food-request.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-available-package',
@@ -41,15 +42,15 @@ export class AvailablePackageComponent implements OnInit {
   sendRequest(Package:any){
     this.ids.packageId = Package.packageId;
     this.ids.requestId = this.foodService.getRecentRequest().requestId;
+    
     this.foodService.sendRequestNotice(this.ids).subscribe(
       (res:any) => {
-        alert("Your Request Has been sent. You will be notified after Restaurant Confirmation");
-        console.log(res);
-        this.router.navigateByUrl('/ngo-home');
+        Swal.fire("Succeed","Your Request Has been sent. You will be notified after Restaurant Confirmation","success").then(result=>{
+          this.router.navigateByUrl('/ngo-home');
+        })
       },
       (err:any) => {
-        alert(err.error.message);
-        //this.serverErrorMessages = err.error.message;
+        Swal.fire("Error",err.error.message,"error");
       }
     );
   }

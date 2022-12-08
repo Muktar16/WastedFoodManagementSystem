@@ -59,19 +59,28 @@ module.exports.removePackage = async (req, res) =>{
 
 module.exports.updatePackage = async (req, res) =>{
     console.log(req.body)
-    res = FoodPackage.updateOne(
-        { packageId: req.body.packageId },
+
+    FoodPackage.updateOne(
+        {packageId:req.body.packageId},
         { $set:
-           {
-             foodName: req.body.foodName,
-             quantity: req.body.quantity,
-             expiryDate: req.body.expiryDate
-           }
+            {
+              foodName: req.body.foodName,
+              quantity: req.body.quantity,
+              expiryDate: req.body.expiryDate
+            }
+         },
+        function (err, docs) {
+        if (err){
+            console.log(err)
+            return res.status(422).json(err);
         }
-       
-     )
-     console.log(res);
-     res.send({statys:true});
+        else{
+            
+            console.log("Updated Docs : ", docs);
+            return res.status(200).json(docs)
+        }
+    });
+     
 }
 
 

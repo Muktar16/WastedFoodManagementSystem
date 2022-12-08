@@ -47,7 +47,7 @@
       </table>
     
     
-    <div class="caption2">
+    <!-- <div class="caption2">
         <h2>Last One month Activities</h2>
     </div>
     
@@ -64,44 +64,51 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let request of requests; let i=index">
+           <tr *ngFor="let request of requests; let i=index">
             <td>{{request.date}}</td>
             <td>{{request.foodType}}</td>
             <td>{{request.amount}}</td>
             <td>{{request.timeLimit}}</td>
             <td><button (click)="updateRequest(request,i)">Update</button></td>
             <td><button (click)="deleteRequest(request)">Delete</button></td>
-          </tr> -->
+          </tr> 
         </tbody>
-      </table>    
+      </table>     -->
 </div>
 
 <!-- PendingRequests -->
 <div *ngIf="currentContent=='pendingRequests'">
-  <table class="table table-bordered border-primary table-info">
-    <thead class="table-dark">
-          <tr>
-            <th scope="col">Package ID</th>
-            <th scope="col">Food type</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Upload time</th>
-            <th scope="col">Expiry Date</th>
-            <th scope="col">Status</th>
-            <th scope="col">Update/Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- <tr *ngFor="let request of requests; let i=index">
-            <td>{{request.date}}</td>
-            <td>{{request.foodType}}</td>
-            <td>{{request.amount}}</td>
-            <td>{{request.timeLimit}}</td>
-            <td><button (click)="updateRequest(request,i)">Update</button></td>
-            <td><button (click)="deleteRequest(request)">Delete</button></td>
-          </tr> -->
-        </tbody>
-      </table>    
+  <div class="caption1">
+    <h2>Current Pending Requests</h2>
 </div>
+
+<table class="table table-bordered border-primary table-info">
+  <thead class="table-dark">
+      <tr>
+        <th scope="col">Request Id</th>
+        <th scope="col">Uploaded By(NGO)</th>
+        <th scope="col">Food Type</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Supply Date</th>
+        <th scope="col">Delivery Location</th>
+        <th scope="col">Notify the NGO</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of allPendingRequests; let i=index">
+        <td>{{request.requestId}}</td>
+        <td>{{request.ngoName}}</td>
+        <td>{{request.foodName}}</td>
+        <td>{{request.quantity}}</td>
+        <td>{{request.addingDate}}</td>
+        <td>{{request.supplyDate}}</td>
+        <td>{{request.deliveryAddress}}</td>
+       <td><button class="btn-primary" (click)="notifyNGO(request)">Notify</button></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
 
 <!-- addFoodForm -->
 <div *ngIf="currentContent=='addFoodPackageForm'">
@@ -178,9 +185,10 @@
       <tr *ngFor="let notification of notifications; let i=index">
         <td>{{i+1}}</td>
         <td>{{notification.message}}</td>
+        <td>{{notification.addingDate}}</td>
         <td *ngIf="notification.status=='running'">
-            <button class="remove-btn" (click)="confirm(notification)">Confirm Delivery</button>
-            <button class="remove-btn" (click)="cancel(notification)">Cancel</button>
+            <button class="remove-btn btn-primary" (click)="confirm(notification)">Confirm Delivery</button>
+            <button class="remove-btn btn-secondary" (click)="cancel(notification)">Cancel</button>
         </td>
         <td *ngIf="notification.status=='done'">
           Completed
